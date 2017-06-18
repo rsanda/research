@@ -1,0 +1,109 @@
+---
+- hosts: all
+  user: root
+  tasks:
+    - name: uninstall packages
+      yum: 
+        state=absent
+        name="{{ item }}"
+      with_items:
+        - "hadoop*"
+        - "zookeeper*"
+        - "hive*"
+        - "ambari-*"
+    
+    - name: remove data directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /hadoop
+        - /usr/hdp
+    
+    - name: remove config directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /etc/hadoop
+        - /etc/hadoop-httpfs
+        - /etc/zookeeper
+        - /etc/hive
+        - /etc/hive-hcatalog
+        - /etc/hive-webhcat
+        - /etc/ambari-agent
+        - /etc/spark
+        - /etc/tez
+    
+    - name: remove var directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /var/lib/hadoop-hdfs
+        - /var/lib/hadoop-httpfs
+        - /var/lib/hadoop-mapreduce
+        - /var/lib/hadoop-yarn
+        - /var/lib/ambari-agent
+        - /var/lib/hive
+    
+    - name: remove log directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /var/log/hadoop
+        - /var/log/hadoop-yarn
+        - /var/log/hadoop-mapreduce
+        - /var/log/ambari-agent
+        - /var/log/zookeeper
+        - /var/log/hive
+        - /var/log/spark
+    
+    - name: remove home directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /home/hdfs
+        - /home/hive
+        - /home/hcat
+        - /home/zookeeper
+        - /home/spark
+        - /home/tez" 
+
+    - name: remove run directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /var/run/hadoop
+        - /var/run/hadoop-mapreduce
+        - /var/run/hadoop-yarn
+        - /var/run/hive
+        - /var/run/hive-hcatalog
+        - /var/run/zookeeper
+        - /var/run/spark
+
+    - name: remove spool directories
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /var/spool/mail/hdfs
+        - /var/spool/mail/hive
+        - /var/spool/mail/zookeeper
+        - /var/spool/mail/spark
+        - /var/spool/mail/hcat
+        - /var/spool/mail/tez
+
+    - name: remove executables 
+      file:
+        state: absent
+        path: "{{ item }}"
+      with_items:
+        - /usr/bin/hadoop
+        - /usr/bin/hive
+        - /usr/bin/yarn
+        - /usr/bin/hcat
+        - /var/spool/mail/tez
